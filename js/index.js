@@ -1,32 +1,50 @@
 const button = document.querySelector("#btn");
 const type = document.querySelector("#input");
 const block = document.querySelector(".block");
-const buttondel = document.querySelector(".delete-button");
 
-function returnNav(value) {
+function returnNav(value, index) {
     return `
-   <div class="all-sel">
-                    <div class="block-title">${value.todolist}</div>
-                    <div class="block-same">
-                        <img src="./images/penof-card.svg" width="27" height="27" alt="image">
-                        <button class="delete-button">X</button>
-                        </div>
-                </div>
+        <div class="all-sel" data-id="${index}">
+            <div class="block-title">${value.todolist}</div>
+            <div class="block-same">
+                <img src="./images/penof-card.svg" width="27" height="27" alt="image">
+                <button class="delete-button" data-id="${index}">X</button>
+            </div>
+        </div>
     `;
 }
 
 function loadTodos() {
     const todos = JSON.parse(localStorage.getItem("todos")) || [];
-    todos.forEach((todo) => {
-        const info = returnNav(todo);
+    block.innerHTML = "";
+    todos.forEach((todo, index) => {
+        const info = returnNav(todo, index);
         block.innerHTML += info;
     });
+    addDeleteEventListeners();
 }
 
 function saveTodo(value) {
     const todos = JSON.parse(localStorage.getItem("todos")) || [];
     todos.push(value);
     localStorage.setItem("todos", JSON.stringify(todos));
+}
+
+function deleteTodo(index) {
+    let todos = JSON.parse(localStorage.getItem("todos")) || [];
+    todos.splice(index, 1);
+    localStorage.setItem("todos", JSON.stringify(todos));
+    loadTodos();
+}
+
+function addDeleteEventListeners() {
+    const deleteButtons = document.querySelectorAll(".delete-button");
+    deleteButtons.forEach((button) => {
+        button.addEventListener("click", function () {
+            const index = button.getAttribute("data-id");
+            deleteTodo(index);
+        });
+    });
 }
 
 window.addEventListener("load", function () {
@@ -36,8 +54,8 @@ window.addEventListener("load", function () {
 });
 
 button &&
-    button.addEventListener("click", function (value) {
-        value.preventDefault();
+    button.addEventListener("click", function (event) {
+        event.preventDefault();
         const data = {
             todolist: type.value,
         };
@@ -45,9 +63,8 @@ button &&
             alert("fill in the blank");
             return;
         }
-        const info = returnNav(data);
         saveTodo(data);
-        block.innerHTML += info;
+        loadTodos();
         type.value = "";
     });
 
