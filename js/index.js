@@ -29,6 +29,12 @@ function saveTodo(value) {
     localStorage.setItem("todos", JSON.stringify(todos));
 }
 
+window.addEventListener("load", function () {
+    setTimeout(function () {
+        document.getElementById("loader").classList.add("hidden");
+    }, 3000);
+});
+
 button &&
     button.addEventListener("click", function (value) {
         value.preventDefault();
