@@ -4,10 +4,10 @@ const block = document.querySelector(".block");
 
 function returnNav(value, index) {
     return `
-        <div class="all-sel" data-id="${index}">
+       <div class="all-sel" data-id="${index}">
             <div class="block-title">${value.todolist}</div>
             <div class="block-same">
-                <img src="./images/penof-card.svg" width="27" height="27" alt="image">
+                <button class="edit-button" data-id="${index}">...</button>
                 <button class="delete-button" data-id="${index}">X</button>
             </div>
         </div>
@@ -22,6 +22,15 @@ function loadTodos() {
         block.innerHTML += info;
     });
     addDeleteEventListeners();
+}
+function editTodo(index) {
+    let todos = JSON.parse(localStorage.getItem("todos")) || [];
+    const newTodo = prompt("Yangi qiymatni kiriting:", todos[index].todolist);
+    if (newTodo !== null) {
+        todos[index].todolist = newTodo;
+        localStorage.setItem("todos", JSON.stringify(todos));
+        loadTodos();
+    }
 }
 
 function saveTodo(value) {
@@ -45,12 +54,19 @@ function addDeleteEventListeners() {
             deleteTodo(index);
         });
     });
+    const editButtons = document.querySelectorAll(".edit-button");
+    editButtons.forEach((button) => {
+        button.addEventListener("click", function () {
+            const index = button.getAttribute("data-id");
+            editTodo(index);
+        });
+    });
 }
 
 window.addEventListener("load", function () {
     setTimeout(function () {
         document.getElementById("loader").classList.add("hidden");
-    }, 3000);
+    }, 2000);
 });
 
 button &&

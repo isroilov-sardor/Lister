@@ -173,6 +173,12 @@ body {
     padding: 5px;
 }
 
+.delete-button:hover {
+    background-color: blue;
+    color: white;
+    cursor: pointer;
+}
+
 .delete-button:focus {
     background-color: red;
 }
@@ -208,4 +214,24 @@ body {
 
 .loader.hidden {
     display: none;
+}
+
+.edit-button {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    background-color: black;
+    color: white;
+    font-size: 20px;
+    font-weight: 500;
+    padding: 5px;
+}
+
+.edit-button:hover {
+    background-color: blue;
+    color: white;
+    cursor: pointer;
+}
+.edit-button:focus{
+    background-color: red;
 }
